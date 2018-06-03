@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 
-
+gem 'unirest'
 gem 'pg', group: :production
 gem 'rails_12factor', group: :production
 

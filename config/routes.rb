@@ -1,7 +1,16 @@
 Rails.application.routes.draw do
   
-  get '/keyboard' => 'home#keyboard_init'
-  post 'message' => 'home#chat_control'
+    get 'home/index'
+    get '/keyboard' => 'home#keyboard_init'
+    post '/message' => 'home#chat_control'
+    
+    
+    
+    post 'friend' => 'menu#friend'
+    delete 'friend/:user_key' => 'menu#friend'
+    delete 'chat_room/:user_key' => 'menu#chat_room'   
+    
+    
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
