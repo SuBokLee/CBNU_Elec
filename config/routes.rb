@@ -6,9 +6,9 @@ Rails.application.routes.draw do
     
     
     
-    post 'friend' => 'menu#friend'
-    delete 'friend/:user_key' => 'menu#friend'
-    delete 'chat_room/:user_key' => 'menu#chat_room'   
+    post 'friend' => 'home#friend'
+    delete 'friend/:user_key' => 'home#friend'
+    delete 'chat_room/:user_key' => 'home#chat_room'   
     
     
   # The priority is based upon order of creation: first created -> highest priority.

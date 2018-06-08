@@ -1,16 +1,17 @@
-  # require 'unirest'
 class HomeController < ApplicationController
   # 충북대찌릿
-  # require 'unirest'
+  require 'unirest'
 
   
     def keyboard_init
         msg =
             {
               type: "buttons",
-              buttons: ["전자공학부 홈페이지", 
+              buttons: ["전자공학부 홈페이지",
+              "교수님 홈페이지",
               "종합정보시스템",
-              "바압(고장남)",
+              "기숙사/학생식당 식단",
+              "배달음식",
               "소자정보",
               "사용법",  
               "전자상식(공사중)",
@@ -37,29 +38,11 @@ class HomeController < ApplicationController
     
     def self.ygg1   ##양진재 아침
       time1=Time.now
-      dayday = [time1.year, time1.month, time1.day] * '-'    # [2009, 1, 10] * '-' # => "2009-1-10"     
-      # dayday=time1.year+'-'+time1.month+'-'+time1.day
-      # bok_url = 'https://bablabs.com/openapi/v1/campuses/WNtKMDqIcl/stores?type&date=2018-04-18'
+      dayday = [time1.year, time1.month, time1.day] * '-'
       response = Unirest.get 'https://bablabs.com/openapi/v1/campuses/WNtKMDqIcl/stores?type&date='+dayday,
                           headers:{"Accesstoken" => "6hpogihj4qV8NL8FEQrcJ79KeqauppoWcW6ZfYnbruxqdRvGOf"}
-                          # parameters:{ :type => "", :date => dayday }
-                          # puts(dayday)
-                          
-      # time1.to_a
-      # time1.in_time_zone("Seoul")
 
-      # if time1.hour < 10
-      #   a=0                 #아침00시~ 10시까지 아침메뉴
-      #   elsif time1.hour < 14
-      #   a=1                   #난조빱이라 안되게따
-      # else
-      #   a=2
-      # end
-        
-      # puts(response.body["stores"][0]["menus"][0]["description"])                          
       @meal1 = response.body["stores"][0]["menus"][0]["description"]
-      # @meal = response.body["stores"]["menus"]["description"]
-      # puts(response.body["stores"]["menus"].class)
       return @meal1
     end
     
@@ -255,13 +238,51 @@ class HomeController < ApplicationController
         # puts(user_key, type_name, content)
         
         main_menu = ["전자공학부 홈페이지",
-        "종합정보시스템",
-        "바압(고장남)",
-        "소자정보", 
-        "사용법",
-        "전자상식(공사중)",
-        "충북대위키(랜덤)",
-        "충북대학교 어둠의게시판"]
+              "교수님 홈페이지",
+              "종합정보시스템",
+              "기숙사/학생식당 식단",
+              "배달음식",
+              "소자정보",
+              "사용법",  
+              "전자상식(공사중)",
+              "충북대위키(랜덤)",   
+              "충북대학교 어둠의게시판"]
+              
+        processor_list = ["■처음으로",
+          "권오욱 교수",
+          "김곤우 교수",
+          "김남수 교수",
+          "김영석 교수",
+          "김영철 교수",
+          "김진훈 교수",
+          "박근형 교수",
+          "박병우 교수",
+          "박태형 교수",
+          "박찬식 교수",
+          "서보석 교수",
+          "서재원 교수",
+          "송기용 교수",
+          "양병도 교수",
+          "유흥균 교수",
+          "이형규 교수",
+          "전명근 교수",
+          "김형원 교수",
+          "최호용 교수",
+          "김승구 교수",
+          "김성준 교수"
+          ]
+        
+        delivery_menu =["■처음으로",
+          "밥짓는마을",
+          "대홍반점",
+          "황궁쟁반짜장",
+          "장군반점",
+          "켄터베리치킨",
+          "에꿍이치킨",
+          "꼬꼬맨치킨",
+          "맘스터치",
+          "네오피자"]
+        
         
         food_menu =["■처음으로",
         "양진재",
@@ -508,25 +529,9 @@ class HomeController < ApplicationController
         
         
         if content == "전자공학부 홈페이지"
-            # puts('start')
-            # response = Unirest.get 'https://api.openweathermap.org/data/2.5/weather?id=1845604&appid=8354ba5e11c5b42f5cd7edd3b2f2f6c0&units=metric', 
-            #             headers:{ "Accept" => "application/json" }
-            # puts('second')
-            # # puts(response.code)
-            # # puts(response.body) # Parsed body
-            # temperature = response.body['main']['temp']
-            # puts('third')
-            # puts(temperature)
-            # puts(temperature.class)
-            # print(temperature + 'fdsfds')
-            # @supdo = response.body['main']['humidity']
-
             msg = {
               message: {
-                    # "text": temperature.to_s(),
-                    # "text": HomeController.index().to_s(),
-                    # "text": HomeController.ygg1().to_s(),
-                    "text":"ㅇㅇ조교님자리번호,과사번호",
+                    "text": "전자공학부(E8-7동 301호)\n043-261-2473\n043-261-3221\n043-261-3225",
                      "message_button": {
                         "label": "전자공학부",
                         "url": "http://elec.chungbuk.ac.kr/index.php"
@@ -541,13 +546,10 @@ class HomeController < ApplicationController
             render json: msg, status: :ok
             
             
-            
-            
-            
         elsif content == "종합정보시스템"
             msg = {
               message: {
-                     "text":"대학본부 번호ㅇㅇㅇ",
+                     "text":"대학본부: 043-261-3305",
                      "message_button": {
                       "label": "종합정보시스템",
                       "url": "http://gaesin.chungbuk.ac.kr/login.html"
@@ -560,8 +562,593 @@ class HomeController < ApplicationController
               }
             }
             render json: msg, status: :ok
+
+        elsif content == "교수님 홈페이지"
+            msg = {
+              message: {
+                "text":"항목을 선택해주세요."
+              },
+              
+              keyboard: {
+                type: "buttons",
+                buttons: processor_list
+              }
+            }
+            render json: msg, status: :ok
+
+                          elsif content == "권오욱 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 음성인식- 음성신호처리- 오디오신호처리\n연구실: E10동 312호 / 043)261-3374\n이메일: owkwon@chungbuk.ac.kr\n홈페이지: http://speech.chungbuk.ac.kr\n주요약력: 1988.3 ~ 2000.4 한국전자통신연구원 책임연구원 2000.5 ~ 2003.3 한국과학기술원 연구교수 2001.3 ~ 2003.8 University of California, San Diego 박사후연구원 2003.9 ~ 현재 충북대학교 전자공학부 교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://speech.chungbuk.ac.kr/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "김곤우 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: Autonomous Mobile Robot \n연구실: E10동 314호 / 043)261-2486 \n이메일: gwkim@chungbuk.ac.kr\n홈페이지: http://irl.chungbuk.ac.kr\n주요약력: 2006 ~ 2008 한국생산기술연구원 로봇기술본부 위촉연구원2008 ~ 2011 원광대학교 전자및제어공학부 조교수2012.3 ~ 현재 충북대학교 전자공학부 부교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://irl.chungbuk.ac.kr"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "김남수 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: - 반도체소자- FED\n연구실: E10동 214호/ 043)261-2298\n이메일: nsk@chungbuk.ac.kr\n홈페이지: http://bandi.chungbuk.ac.kr/~nsk/\n주요약력: 1988 ~ 1991 현대전자 반도체연구소 과장 1992 ~ 현재 충북대학교 전자공학부 교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://bandi.chungbuk.ac.kr/~nsk/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "김영석 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 아날로그 및 RFIC설계\n연구실: E10동 213호 / 043)261-3137\n이메일: kimys@chungbuk.ac.kr\n홈페이지: http://bandi.chungbuk.ac.kr/~ysk/\n주요약력: 1982 ~ 1985 LG전자 중앙연구소 연구원 1990 ~ 1993.2 Motorora APRDL Staff Engineer 1993.3 ~ 현재 충북대학교 전자공학부 교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://bandi.chungbuk.ac.kr/~ysk/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "김영철 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 정밀 제어시스템 설계-시스템 모델링 -자율주행차/전기자동차 제어시스템\n연구실: E10동 415호 / 043)261-2475\n이메일: yckim@cbnu.ac.kr\n홈페이지: http://elec.chungbuk.ac.kr/schSystem/index.php?mode=cyberpage&userID=yckim\n주요약력: 1988-현재 충북대학교 전자공학부 교수미국 Texas A&M (1991), Vanderbilt 대학/테네시 대학 (2001) 연구교수 2009-2010 대한전기학회 정보및제어부문회장, KIEE 부회장2010-2012 충북대학교 도서관장",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://elec.chungbuk.ac.kr/schSystem/index.php?mode=cyberpage&userID=yckim"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "김진훈 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 강인제어\n연구실: E10동 309호 / 043)261-2387\n이메일: jinhkim@chungbuk.ac.kr\n홈페이지: http://elec.chungbuk.ac.kr/schSystem/index.php?mode=cyberpage&userID=jinhkim\n주요약력: 1985 ~ 1986 (주)신영전기 연구원 1993 ~ 1994 경상대학교 제어계측공학과 전임강사 1995.3 ~ 현재 충북대학교 전자공학부 교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://elec.chungbuk.ac.kr/schSystem/index.php?mode=cyberpage&userID=jinhkim"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "박근형 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: RF시스템- 나노소자\n연구실: E10동 211호 / 043)261-3157 \n이메일: khp@chungbuk.ac.kr\n홈페이지: http://elec.chungbuk.ac.kr/schSystem/index.php?mode=cyberpage&userID=khp1\n주요약력: 1991 ~ 1993 Cypress Semicon Senior Tech. Engineer 1993 ~ 1994.2 LG반도체 중앙연구소 책임연구원 1994.3 ~ 현재 충북대학교 전자공학부 교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://elec.chungbuk.ac.kr/schSystem/index.php?mode=cyberpage&userID=khp1"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "박병우 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 초고주파회로- 안테나공학\n연구실: E10동 503호 / 043)261-2478\n이메일: bwpark@chungbuk.ac.kr\n홈페이지: http://anmic.chungbuk.ac.kr\n주요약력: 1984 ~ 1988 동양공업전문대 전자과 조교수 1998 ~ 현재 충북대학교 전자공학부 교수1997 ~ 2001 한국통신학회 통신회로 및 분과 위원장 위원장 2003 ~ 현재 전자파학회 충청지부장 지부장 2003 ~ 2005 전기전자컴퓨터공학부 학부장 학부장 2003 ~ 2005 BK사업단장, IT-NURI 사업단장 사업단장",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://anmic.chungbuk.ac.kr"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "박태형 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 로보틱스 및 자동화\n연구실: E10동 313호 / 043)261-3240\n이메일: taehpark@cbnu.ac.kr\n홈페이지: http://robotics.chungbuk.ac.kr/\n주요약력: 1994 ~ 1997 삼성테크윈(주) 정밀기기연구소 선임연구원 2000 ~ 2001 캐나다 토론토대학교 방문교수 1997.3 ~ 현재 충북대학교 전자공학부 교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://robotics.chungbuk.ac.kr/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "박찬식 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: GPS- 국방- 차량 및 선박 항법- 차량 제어\n연구실: E10동 315호 / 043)261-3259\n이메일: chansp@chungbuk.ac.kr\n홈페이지: http://gnc.chungbuk.ac.kr/\n주요약력: 1984.2 ~ 1997.8 삼성전자 정보통신 책임연구원 2002.8 ~ 2003.8 MGP(Mathematical Geodesy and Positioning), Delft University of Technology, the Netherlands 방문연구원 1997.8 ~ 현재 충북대학교 전자공학부 교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://gnc.chungbuk.ac.kr/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "서보석 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 디지털통신- 군통신- 통신신호처리\n연구실: E10동 510호\n이메일: boseok@cbnu.ac.kr\n홈페이지: http://elec.chungbuk.ac.kr\n주요약력: 1998 ~ 1999 삼성전자 중앙연구소 선임연구원 1999 ~ 2004 고려대학교 정보통신기술공동연구소 연구교수2004.9 ~ 현재 충북대학교 전자공학부 교수2013.3 ~ 현재 충북대학교 전자공학부장 및 대학원 전자공학전공 주임교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://elec.chungbuk.ac.kr"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "서재원 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 영상처리- 동영상 표준화\n연구실: E10동 511호 / 043)261-3268\n이메일: sjwon@chungbuk.ac.kr\n홈페이지: http://vclab.cbnu.ac.kr/\n주요약력: 2003 ~ 2004.8 LG 전자기술원 선임/연구개발2004.9 ~ 현재 충북대학교 전자공학부 부교수2014.3 ~ 현재 충북대학교 전자정보대학 부학장 ",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://vclab.cbnu.ac.kr/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "송기용 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공:SoC설계- PLD기반디지털시스템설계- 상위수준합성 \n연구실: E10동 410호 / 043)261-2452\n이메일: gysong@chungbuk.ac.kr\n홈페이지: http://elec.chungbuk.ac.kr\n주요약력: 1978년 서울대 공대 공교 전자 학사1980년 서울대 대학원 전자공학 석사1995년 미국 루이지애나 주립대 컴퓨터공학 박사1993년 ~ 현재 충북대학교 전자공학부 교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://elec.chungbuk.ac.kr"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "양병도 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 집적회로설계- 메모리설계\n연구실: E10동 209호 / 043)261-3583\n이메일: bdyang@chungbuk.ac.kr\n홈페이지: http://bandi.chungbuk.ac.kr/~bdyang/\n주요약력: 2001.9 ~ 2002.6 한국전자통신연구원 위촉연구원 2005.3 ~ 2006.1 삼성전자 메모리사업부 책임연구원 2006.3 ~ 현재 충북대학교 전자공학부 부교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://bandi.chungbuk.ac.kr/~bdyang/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "유흥균 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 디지털통신- 3G&4G이동통신- 통신회로설계\n연구실: E10동 412호 / 043)261-2477\n이메일: ecomm@chungbuk.ac.kr\n홈페이지: http://commlab.chungbuk.ac.kr/\n주요약력: 1988.2 ~ 현재 충북대학교 전자공학부 교수2002.3 ~ 2004.3 충북대학교 컴퓨터정보통신연구소 소장 2002.3 ~ 2004.3 충북대학교 정보기술경영과학연구원 원장 1999.3 ~ 현재 IEEE Transaction on Communication,Vehicular Technology, Communication Letter,등 논문심사위원 1994년 ~ 현재 한국산업기술평가원, 정보통신연구진흥원, 한술진흥재단, 한국과학재단, 등 평가위원, 전문위원, 심의위원, 등",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://commlab.chungbuk.ac.kr/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "이형규 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 유기물박막트랜지스터- 질화물LED- 나노전자소자\n연구실: E10동 212호 / 043)261-3138\n이메일: hglee@chungbuk.ac.kr\n홈페이지: http://bandi.chungbuk.ac.kr/~hglee/\n주요약력: 1986 ~ 1987 Honeywell Consultant 1989 ~ 1991 Univ. of Pittsburgh Researcher 1991 ~ 1993.2 AT&T Bell Lab. MTS 1993.3 ~ 현재 충북대학교 전자공학부 교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://bandi.chungbuk.ac.kr/~hglee/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "전명근 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 생체인식\n연구실: E10동 311호 / 043)261-2388\n이메일: mgchun@chungbuk.ac.kr\n홈페이지: http://elec.chungbuk.ac.kr/schSystem/index.php?mode=cyberpage&userID=mgchun\n주요약력: 1993 ~ 1996 삼성전자 자동화연구소 선임연구원2000 ~ 2001 University of Alberta 방문연구원 1996.3 ~ 현재 충북대학교 전자공학부 교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://elec.chungbuk.ac.kr/schSystem/index.php?mode=cyberpage&userID=mgchun"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "김형원 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 통신칩설계 및 USN 연구 - 디지털 및 아날로그 혼성신호 집적회로 설계- SoC 설계 및 임베디드 시스템 연구\n연구실: E10동 413호/ 043)261-2399\n이메일: hwkim@chungbuk.ac.kr\n홈페이지: http://msis.cbnu.ac.kr/\n주요약력: 1987 KAIST 전기및전자공학 B.S.1991 KAIST 전기및전자공학 M.S.1999 University of Michigan, Ann Arbor, Ph.D1998 Intel, US, Low power Circuit Design1999 - 2000 Synopsys, US, EDA Software 개발2001 - 2005 Broadcom, US, Communication SoC 개발2005 - 2013 (주)카이로넷, 벤처설립 및 WiBro/WiFi SoC 개발2013 - 현재 충북대학교 전자공학부 조교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://msis.cbnu.ac.kr/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "최호용 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 집적시스템설계- VLSI테스트\n연구실: E10동 210호 / 043)261-3231\n이메일: hychoi@chungbuk.ac.kr\n홈페이지: http://hychoi.chungbuk.ac.kr/\n주요약력: 1982.3 ~ 1985.8 삼성전자 반도체연구소 설계팀장 1985.9 ~ 1996.8 부경대학교 전자공학과 조교수/부교수 1996.9 ~ 현재 충북대학교 전자공학부 교수 2000.1 ~ 2000.2 Univ. of Tokyo 방문교수2009.3 ~ 2009.11 Univ. of Wisconsin 방문교수2004.9 ~ 현재 충북대학교 유비쿼터스바이오정보기술연구센터 경영기획실장2008.7 ~ 2009.2 오창혁신클러스터운영위원회 부위원장2007.9 ~ 2010.8 하이닉스반도체트랙 주임교수2010.9 ~ 현재 대학원 나노반도체공학과 주임교수 2011.3 ~ 현재 전자공학부 학부장, 대학원 반도체공학과 주임교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://hychoi.chungbuk.ac.kr/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "김승구 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 무선 네트워크 및 임베디드 시스템\n연구실: E10동 413호 / 043)261-2479\n이메일: kimsk@chungbuk.ac.kr\n홈페이지: http://wine.cbnu.ac.kr\n주요약력: 2013.10 ~ 2015.08삼성전자 소프트웨어센터 책임연구원2015.09 ~ 현재 충북대학교 전자공학부 조교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "http://wine.cbnu.ac.kr"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+                          elsif content == "김성준 교수"
+                              msg = {
+                                message: {
+                                       "text":"연구분야/전공: 반도체 소자- 차세대 메모리\n연구실: E10동 206호/043)261-3327\n이메일: sungjun@chungbuk.ac.kr\n홈페이지: https://sites.google.com/view/sjkim/\n주요약력: 2017 ~ 2018 삼성전자 반도체연구소 책임연구원 2018.3 ~ 현재 충북대학교 전자공학부 조교수",
+                                       "message_button": {
+                                        "label": "교수홈페이지로 이동",
+                                        "url": "https://sites.google.com/view/sjkim/"
+                                      }
+                                },
+                                
+                                keyboard: {
+                                  type: "buttons",
+                                  buttons: processor_list
+                                }
+                              }
+                              render json: msg, status: :ok
+
+
+        elsif content == "배달음식"
+            msg = {
+              message: {
+                text: "항목을 선택해주세요."
+              },
+              
+              keyboard: {
+                type: "buttons",
+                buttons: delivery_menu
+              }
+            }
+            render json: msg, status: :ok            
             
-        elsif content == "바압(고장남)"
+                                    elsif content == "■처음으로"           #공통적으로 쓰는 ■처음으로
+                                        msg = {
+                                          message: {
+                                            text: "원하는 항목을 선택해주세요."
+                                          },
+                                          keyboard: {
+                                            type: "buttons",
+                                            buttons: main_menu
+                                          }
+                                        }
+                                        render json: msg, status: :ok             
+            
+                                    elsif content == "밥짓는마을"
+                                        msg = {
+                                          message: {
+                                            text: "전화: 043-267-1775\n456-12-046-734 농협 박순분\n제육세트+밥추가(3명먹어요)",
+                                            "photo": {
+                                              "url": "https://t1.daumcdn.net/cfile/tistory/99F5E3335B17EA2336",
+                                              "width": 720,
+                                              "height": 630
+                                            },
+                                            message_button: {
+                                              "label": "자세히보기",
+                                              "url": "http://dogbok.tistory.com/367?category=1004627"
+                                            }
+                                          },
+                                          keyboard: {
+                                            type: "buttons",
+                                            buttons: delivery_menu
+                                          }
+                                        }
+                                        render json: msg, status: :ok
+
+                                    elsif content == "대홍반점"
+                                        msg = {
+                                          message: {
+                                            text: "전화: 043-263-8866\n40-4001-04-04-1257 국민 최춘례\n043-263-8866\n고기면,고기밥",
+                                            "photo": {
+                                              "url": "",
+                                              "width": 720,
+                                              "height": 630
+                                            },
+                                            message_button: {
+                                              "label": "자세히보기",
+                                              "url": ""
+                                            }
+                                          },
+                                          keyboard: {
+                                            type: "buttons",
+                                            buttons: delivery_menu
+                                          }
+                                        }
+                                        render json: msg, status: :ok
+
+                                    elsif content == "황궁쟁반짜장"
+                                        msg = {
+                                          message: {
+                                            text: "전화: 050-7900-9060",
+                                            "photo": {
+                                              "url": "https://t1.daumcdn.net/cfile/tistory/993B1A3A5B17EA5E32",
+                                              "width": 720,
+                                              "height": 630
+                                            },
+                                            message_button: {
+                                              "label": "자세히보기",
+                                              "url": "http://dogbok.tistory.com/369?category=1004627"
+                                            }
+                                          },
+                                          keyboard: {
+                                            type: "buttons",
+                                            buttons: delivery_menu
+                                          }
+                                        }
+                                        render json: msg, status: :ok
+
+                                    elsif content == "장군반점"
+                                        msg = {
+                                          message: {
+                                            text: "전화: 043-275-7687",
+                                            "photo": {
+                                              "url": "https://t1.daumcdn.net/cfile/tistory/99D7CD455B17450E2D",
+                                              "width": 720,
+                                              "height": 630
+                                            },
+                                            message_button: {
+                                              "label": "자세히보기",
+                                              "url": "http://dogbok.tistory.com/371?category=1004627"
+                                            }
+                                          },
+                                          keyboard: {
+                                            type: "buttons",
+                                            buttons: delivery_menu
+                                          }
+                                        }
+                                        render json: msg, status: :ok
+
+                                    elsif content == "켄터베리치킨"
+                                        msg = {
+                                          message: {
+                                            text: "전화: 0504-109-6445",
+                                            "photo": {
+                                              "url": "https://t1.daumcdn.net/cfile/tistory/991D9E3C5B17EA3E07",
+                                              "width": 720,
+                                              "height": 630
+                                            },
+                                            message_button: {
+                                              "label": "자세히보기",
+                                              "url": "http://dogbok.tistory.com/368?category=1004627"
+                                            }
+                                          },
+                                          keyboard: {
+                                            type: "buttons",
+                                            buttons: delivery_menu
+                                          }
+                                        }
+                                        render json: msg, status: :ok
+
+                                    elsif content == "에꿍이치킨"
+                                        msg = {
+                                          message: {
+                                            text: "전화: 043-233-9905",
+                                            "photo": {
+                                              "url": "https://t1.daumcdn.net/cfile/tistory/99D7CD455B17450E2D",
+                                              "width": 720,
+                                              "height": 630
+                                            },
+                                            message_button: {
+                                              "label": "자세히보기",
+                                              "url": "http://dogbok.tistory.com/372?category=1004627"
+                                            }
+                                          },
+                                          keyboard: {
+                                            type: "buttons",
+                                            buttons: delivery_menu
+                                          }
+                                        }
+                                        render json: msg, status: :ok
+
+                                    elsif content == "꼬꼬맨치킨"
+                                        msg = {
+                                          message: {
+                                            text: "050-7990-3209",
+                                            "photo": {
+                                              "url": "https://t1.daumcdn.net/cfile/tistory/99D7CD455B17450E2D",
+                                              "width": 720,
+                                              "height": 630
+                                            },
+                                            message_button: {
+                                              "label": "자세히보기",
+                                              "url": "http://dogbok.tistory.com/373?category=1004627"
+                                            }
+                                          },
+                                          keyboard: {
+                                            type: "buttons",
+                                            buttons: delivery_menu
+                                          }
+                                        }
+                                        render json: msg, status: :ok
+
+                                    elsif content == "맘스터치"
+                                        msg = {
+                                          message: {
+                                            text: "전화: 0504-109-9770",
+                                            "photo": {
+                                              "url": "https://t1.daumcdn.net/cfile/tistory/99B8D03D5B0A51D705",
+                                              "width": 720,
+                                              "height": 630
+                                            },
+                                            message_button: {
+                                              "label": "자세히보기",
+                                              "url": "http://dogbok.tistory.com/374?category=1004627"
+                                            }
+                                          },
+                                          keyboard: {
+                                            type: "buttons",
+                                            buttons: delivery_menu
+                                          }
+                                        }
+                                        render json: msg, status: :ok
+
+                                    elsif content == "네오피자"
+                                        msg = {
+                                          message: {
+                                            text: "전화: 043-260-4538",
+                                            "photo": {
+                                              "url": "https://t1.daumcdn.net/cfile/tistory/99D7CD455B17450E2D",
+                                              "width": 720,
+                                              "height": 630
+                                            },
+                                            message_button: {
+                                              "label": "자세히보기",
+                                              "url": "http://dogbok.tistory.com/375?category=1004627"
+                                            }
+                                          },
+                                          keyboard: {
+                                            type: "buttons",
+                                            buttons: delivery_menu
+                                          }
+                                        }
+                                        render json: msg, status: :ok
+
+        elsif content == "기숙사/학생식당 식단"
             msg = {
               message: {
                 "text":"항목을 선택해주세요."
@@ -2309,9 +2896,9 @@ class HomeController < ApplicationController
             }
             render json: msg, status: :ok
             
-        end
-    end
-    
+        end  #if els end
+    end  #Chat_control end
+      
 
 
 
@@ -2336,4 +2923,4 @@ class HomeController < ApplicationController
     
 
     
-end
+end #Controller end
