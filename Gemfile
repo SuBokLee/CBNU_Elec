@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'figaro' 
-gem 'therubyracer', platforms: :ruby
 
 gem 'unirest'
 gem 'pg', group: :production
