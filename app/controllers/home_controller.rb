@@ -964,13 +964,13 @@ class HomeController < ApplicationController
                                           }
                                         }
                                         render json: msg, status: :ok
-
+                                        
                                     elsif content == "대홍반점"
                                         msg = {
                                           message: {
                                             text: "전화: 043-263-8866\n40-4001-04-04-1257 국민 최춘례\n043-263-8866\n고기면,고기밥",
                                             "photo": {
-                                              "url": "https://t1.daumcdn.net/cfile/tistory/996F18355B2096FD16",
+                                              "url": "https://t1.daumcdn.net/cfile/tistory/99102C365B1F728115",
                                               "width": 720,
                                               "height": 630
                                             },
@@ -985,6 +985,27 @@ class HomeController < ApplicationController
                                           }
                                         }
                                         render json: msg, status: :ok
+                                        
+                                    # elsif content == "대홍반점"
+                                    #     msg = {
+                                    #       message: {
+                                    #         text: "전화: 043-263-8866\n40-4001-04-04-1257 국민 최춘례\n043-263-8866\n고기면,고기밥",
+                                    #         "photo": {
+                                    #           "url": "https://t1.daumcdn.net/cfile/tistory/99102C365B1F728115",
+                                    #           "width": 720,
+                                    #           "height": 630
+                                    #         },
+                                    #         message_button: {
+                                    #           "label": "자세히보기",
+                                    #           "url": "http://dogbok.tistory.com/370?category=1004627"
+                                    #         }
+                                    #       },
+                                    #       keyboard: {
+                                    #         type: "buttons",
+                                    #         buttons: delivery_menu
+                                    #       }
+                                    #     }
+                                    #     render json: msg, status: :ok
 
                                     elsif content == "황궁쟁반짜장"
                                         msg = {
