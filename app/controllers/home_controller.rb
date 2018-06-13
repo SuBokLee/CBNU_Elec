@@ -976,7 +976,7 @@ class HomeController < ApplicationController
                                             },
                                             message_button: {
                                               "label": "자세히보기",
-                                              "url": "http://dogbok.tistory.com/370"
+                                              "url": "http://dogbok.tistory.com/370?category=1004627"
                                             }
                                           },
                                           keyboard: {
