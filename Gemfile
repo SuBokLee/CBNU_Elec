@@ -4,7 +4,8 @@ gem 'figaro'
 gem 'therubyracer', platforms: :ruby
 
 gem 'unirest'
-gem 'pg', group: :production
+
+# gem 'pg', group: :production
 gem 'rails_12factor', group: :production
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

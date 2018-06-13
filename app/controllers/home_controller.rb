@@ -293,21 +293,6 @@ class HomeController < ApplicationController
         "은하수식당(교직원식당)"
         ]
         
-        food_when1 =["■처음으로",  #양진재 아점저
-        "양진재 아침",
-        "양진재 점심",
-        "양진재 저녁"]
-
-        food_when2 =["■처음으로",  #양성재 아점저
-        "양성재 아침",
-        "양성재 점심",     
-        "양성재 저녁"]
-
-        food_when3 =["■처음으로",  #개성재 아점저
-        "개성재 아침",
-        "개성재 점심",     
-        "개성재 저녁"]
-        
         food_when4 =["■처음으로",  #신학 메뉴
         "주먹밥[8:30~10:50]",
         "백반[11:00~14:00]",     
@@ -985,13 +970,13 @@ class HomeController < ApplicationController
                                           message: {
                                             text: "전화: 043-263-8866\n40-4001-04-04-1257 국민 최춘례\n043-263-8866\n고기면,고기밥",
                                             "photo": {
-                                              "url": "",
+                                              "url": "https://t1.daumcdn.net/cfile/tistory/996F18355B2096FD16",
                                               "width": 720,
                                               "height": 630
                                             },
                                             message_button: {
                                               "label": "자세히보기",
-                                              "url": ""
+                                              "url": "http://dogbok.tistory.com/370"
                                             }
                                           },
                                           keyboard: {
